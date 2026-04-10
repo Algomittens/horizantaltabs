@@ -1070,6 +1070,23 @@
     let popupOpened = false;
     let hasScrolled = false;
 
+    function openPopup() {
+      cursorHint.style.display = 'none';
+      if (popupWrapper.style.display !== 'none') return;
+      popupWrapper.style.display = 'block';
+      if (!popupOpened) {
+        popupOpened = true;
+        toolbar.classList.add('collapsed');
+        expandBtn.classList.add('visible');
+        setTimeout(() => hintScroll.classList.add('visible'), 600);
+      }
+    }
+
+    // Auto-open popup when cursor animation reaches the icon
+    setTimeout(() => {
+      openPopup();
+    }, 2400);
+
     extIcon.addEventListener('click', () => {
       cursorHint.style.display = 'none';
       // If floater is active, close it and show popup instead
@@ -1084,10 +1101,8 @@
       popupWrapper.style.display = showing ? 'block' : 'none';
       if (showing && !popupOpened) {
         popupOpened = true;
-        // Open in collapsed mode
         toolbar.classList.add('collapsed');
         expandBtn.classList.add('visible');
-        // Show "scroll me" hint after a beat
         setTimeout(() => hintScroll.classList.add('visible'), 600);
       }
     });
