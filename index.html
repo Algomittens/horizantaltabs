@@ -391,6 +391,17 @@
     .mockup-strip.compact .mockup-tab .mtitle { display: none; }
     .mockup-strip.compact .mockup-tab .mclose { display: none; }
     .mockup-strip.compact .mockup-group-label { display: none; }
+    /* Multi-row mode */
+    .mockup-strip.rows-2 {
+      flex-wrap: wrap; overflow-x: hidden; overflow-y: auto;
+      max-height: 84px; align-content: flex-start;
+    }
+    .mockup-strip.rows-3 {
+      flex-wrap: wrap; overflow-x: hidden; overflow-y: auto;
+      max-height: 126px; align-content: flex-start;
+    }
+    .mockup-strip.compact.rows-2 { max-height: 88px; }
+    .mockup-strip.compact.rows-3 { max-height: 132px; }
     /* Active toolbar button */
     .mockup-tbtn.active { color: #3BBFA0 !important; }
     /* Toast */
@@ -678,6 +689,7 @@
         </div>
         <div class="mockup-tbtn" id="mock-badge"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/><text x="12" y="16" text-anchor="middle" font-size="11" font-weight="700" fill="currentColor" stroke="none">#</text></svg><span class="tooltip">Tab count badge</span></div>
         <div class="mockup-tbtn" id="mock-compact"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="tooltip">Compact mode</span></div>
+        <div class="mockup-tbtn" id="mock-rows"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/></svg><span class="tooltip">Multi-row</span></div>
         <div class="mockup-tbtn" id="mock-export"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg><span class="tooltip">Export URLs</span></div>
         <div class="mockup-tbtn" id="mock-session"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg><span class="tooltip">Sessions</span></div>
         <div class="mockup-tbtn" id="mock-collapse"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#3BBFA0" stroke-width="2" stroke-linecap="round"><polyline points="18 14 12 8 6 14"/><polyline points="18 20 12 14 6 20"/></svg><span class="tooltip">Hide toolbar</span></div>
@@ -776,6 +788,11 @@
         <span class="feature-tag">Pro</span>
       </div>
       <div class="feature-row">
+        <span class="feature-name pro">Multi-row layout</span>
+        <span class="feature-desc">Display tabs in 2 or 3 rows for a grid view.</span>
+        <span class="feature-tag">Pro</span>
+      </div>
+      <div class="feature-row">
         <span class="feature-name pro">Export URLs</span>
         <span class="feature-desc">Copy every open tab URL to your clipboard.</span>
         <span class="feature-tag">Pro</span>
@@ -809,6 +826,7 @@
           <li>Undo close</li>
           <li>Multi-window</li>
           <li>Compact mode</li>
+          <li>Multi-row layout</li>
           <li>Export URLs</li>
           <li>Mute tabs</li>
         </ul>
@@ -847,16 +865,21 @@
     const rightBtn = document.getElementById('mock-right');
     const toolbar = document.getElementById('mock-toolbar');
     const collapseBtn = document.getElementById('mock-collapse');
+    let mockRowCount = 1;
     const expandBtn = document.getElementById('mock-expand');
 
     // Arrow click scrolling
     leftBtn.addEventListener('click', () => strip.scrollBy({ left: -200, behavior: 'smooth' }));
     rightBtn.addEventListener('click', () => strip.scrollBy({ left: 200, behavior: 'smooth' }));
 
-    // Mouse wheel horizontal scrolling
+    // Mouse wheel scrolling
     strip.addEventListener('wheel', (e) => {
       e.preventDefault();
-      strip.scrollBy({ left: e.deltaY > 0 ? 120 : -120 });
+      if (mockRowCount > 1) {
+        strip.scrollTop += e.deltaY > 0 ? 40 : -40;
+      } else {
+        strip.scrollBy({ left: e.deltaY > 0 ? 120 : -120 });
+      }
     }, { passive: false });
 
     // Click-drag to scroll
@@ -938,6 +961,7 @@
     // Hide "unhide me" when user clicks expand, show "try us!" + bling icons
     const hintTryus = document.getElementById('hint-tryus');
     const blingBtns = [document.getElementById('mock-badge'), document.getElementById('mock-compact'),
+                       document.getElementById('mock-rows'),
                        document.getElementById('mock-export'), document.getElementById('mock-session')];
     expandBtn.addEventListener('click', () => {
       hintUnhide.classList.remove('visible');
@@ -982,6 +1006,23 @@
     compactBtn.addEventListener('click', () => {
       strip.classList.toggle('compact');
       compactBtn.classList.toggle('active');
+    });
+
+    // Multi-row toggle
+    const rowsBtn = document.getElementById('mock-rows');
+    const mockRowIcons = {
+      1: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/></svg><span class="tooltip">Multi-row</span>',
+      2: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg><span class="tooltip">Multi-row (2)</span>',
+      3: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg><span class="tooltip">Multi-row (3)</span>',
+    };
+    rowsBtn.addEventListener('click', () => {
+      mockRowCount = mockRowCount >= 3 ? 1 : mockRowCount + 1;
+      strip.classList.remove('rows-2', 'rows-3');
+      if (mockRowCount >= 2) strip.classList.add('rows-' + mockRowCount);
+      rowsBtn.innerHTML = mockRowIcons[mockRowCount];
+      rowsBtn.classList.toggle('active', mockRowCount > 1);
+      leftBtn.style.display = mockRowCount > 1 ? 'none' : '';
+      rightBtn.style.display = mockRowCount > 1 ? 'none' : '';
     });
 
     // Export URLs
