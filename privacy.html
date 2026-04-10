@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — HorizantalTabs</title>
+  <link rel="icon" type="image/png" href="icon-128.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --accent: #3BBFA0;
+      --accent-bright: #5CD4B8;
+      --accent-gradient: linear-gradient(135deg, #5CD4B8, #3BBFA0, #2CA882);
+      --bg-primary: #06080a;
+      --bg-card: rgba(14, 16, 22, 0.7);
+      --text-primary: #ededf0;
+      --text-secondary: #8888a0;
+      --text-muted: #4a4a60;
+      --border: rgba(255, 255, 255, 0.06);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 15% 10%, rgba(59, 191, 160, 0.06), transparent);
+      pointer-events: none;
+    }
+    a { color: var(--accent-bright); text-decoration: none; }
+    a:hover { color: var(--accent); }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 64px;
+      background: rgba(6, 8, 10, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-size: 18px; font-weight: 700; color: var(--text-primary);
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .logo img { width: 28px; height: 28px; border-radius: 6px; }
+    .logo span {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a { color: var(--text-secondary); font-size: 14px; font-weight: 500; }
+    .nav-links a:hover { color: var(--text-primary); }
+
+    .content {
+      position: relative; z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 120px 24px 80px;
+    }
+    .content h1 {
+      font-size: 36px; font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .content .updated {
+      font-size: 14px; color: var(--text-muted);
+      margin-bottom: 40px;
+    }
+    .content h2 {
+      font-size: 20px; font-weight: 600;
+      margin-top: 40px; margin-bottom: 12px;
+      color: var(--accent-bright);
+    }
+    .content h3 {
+      font-size: 16px; font-weight: 600;
+      margin-top: 24px; margin-bottom: 8px;
+    }
+    .content p, .content li {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+    .content ul {
+      padding-left: 20px;
+      margin-bottom: 16px;
+    }
+    .content li { margin-bottom: 6px; }
+    .content strong { color: var(--text-primary); }
+    .content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .content th, .content td {
+      text-align: left;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    .content th {
+      background: rgba(59, 191, 160, 0.08);
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    footer {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 48px 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    footer a { color: var(--text-secondary); }
+    .footer-links { display: flex; gap: 24px; justify-content: center; margin-top: 12px; }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 16px; }
+      .content { padding: 100px 16px 60px; }
+      .content h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">
+      <img src="icon-128.png" alt="HorizantalTabs">
+      Horizantal<span>Tabs</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="terms.html">Terms</a>
+    </div>
+  </nav>
+
+  <div class="content">
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: April 10, 2026</p>
+
+    <h2>1. Who We Are</h2>
+    <p><strong>HorizantalTabs</strong> is a Chrome extension developed and operated by <strong>Algomittens LLC</strong>. If you have any questions about this policy, contact us at <a href="mailto:algomittens@gmail.com">algomittens@gmail.com</a>.</p>
+
+    <h2>2. Single Purpose</h2>
+    <p>HorizantalTabs provides horizontal tab management for Google Chrome. It displays your open tabs in a scrollable horizontal strip so you can search, switch, reorder, and organize tabs efficiently.</p>
+
+    <h2>3. Data We Collect</h2>
+
+    <h3>3a. Tab Metadata (Local Only)</h3>
+    <p>The extension reads tab information (titles, URLs, favicons, group assignments) using the Chrome Tabs API. This data is used <strong>only within the extension popup</strong> to display your tabs. It is <strong>never sent to any server</strong>.</p>
+
+    <h3>3b. Email Address (Pro Users)</h3>
+    <p>If you upgrade to HorizantalTabs Pro, we store your email address to verify your license. Your email is stored in our database (Supabase) and is used solely for license verification.</p>
+
+    <h3>3c. Payment Information</h3>
+    <p>Payments are processed by <strong>Stripe</strong>. We do not store credit card numbers or payment details. Stripe handles all payment processing under their own <a href="https://stripe.com/privacy" target="_blank">privacy policy</a>.</p>
+
+    <h3>3d. Thumbnail Cache (Local Only)</h3>
+    <p>For Pro users, the extension captures low-resolution JPEG thumbnails of your active tab for the hover preview feature. These are stored <strong>only in the service worker's memory</strong> (never on disk, never sent to any server) and are cleared when Chrome closes.</p>
+
+    <h2>4. Data We Do NOT Collect</h2>
+    <ul>
+      <li>We do <strong>not</strong> track your browsing history</li>
+      <li>We do <strong>not</strong> read page content</li>
+      <li>We do <strong>not</strong> use analytics, tracking pixels, or fingerprinting</li>
+      <li>We do <strong>not</strong> sell, share, or monetize any user data</li>
+      <li>We do <strong>not</strong> use cookies</li>
+    </ul>
+
+    <h2>5. Permissions Explained</h2>
+    <table>
+      <tr><th>Permission</th><th>Why We Need It</th></tr>
+      <tr><td><strong>tabs</strong></td><td>Read tab titles, URLs, and state to display them in the popup</td></tr>
+      <tr><td><strong>activeTab</strong></td><td>Capture thumbnails of the currently active tab (Pro only)</td></tr>
+      <tr><td><strong>tabGroups</strong></td><td>Read and display Chrome tab group labels and colors</td></tr>
+      <tr><td><strong>storage</strong></td><td>Save your preferences (compact mode, badge toggle, license status) locally</td></tr>
+    </table>
+
+    <h2>6. Data Storage</h2>
+    <table>
+      <tr><th>Data</th><th>Where</th><th>Duration</th></tr>
+      <tr><td>Tab metadata</td><td>Extension memory (local)</td><td>While popup is open</td></tr>
+      <tr><td>Thumbnails</td><td>Service worker memory (local)</td><td>Until Chrome closes</td></tr>
+      <tr><td>Preferences</td><td>chrome.storage.local</td><td>Until you uninstall</td></tr>
+      <tr><td>Saved sessions</td><td>chrome.storage.local</td><td>Until you delete them</td></tr>
+      <tr><td>License email</td><td>chrome.storage.local + Supabase (US)</td><td>Until cancellation</td></tr>
+      <tr><td>Payment records</td><td>Stripe</td><td>Per Stripe's policy</td></tr>
+    </table>
+
+    <h2>7. Third-Party Services</h2>
+    <p>We use the following third-party services:</p>
+    <ul>
+      <li><strong>Supabase</strong> (database, US-hosted) &mdash; stores license records (email + subscription status)</li>
+      <li><strong>Stripe</strong> (payment processing) &mdash; handles all payment transactions</li>
+    </ul>
+    <p>No other third parties receive any data from this extension.</p>
+
+    <h2>8. Data Sharing</h2>
+    <p>We do <strong>not</strong> sell, rent, or share your data with third parties for marketing or advertising purposes. Data is shared only with Supabase (license storage) and Stripe (payment processing) as described above.</p>
+
+    <h2>9. Web Browsing Activity</h2>
+    <p>The extension accesses tab URLs and titles solely to display them in the popup interface. We do <strong>not</strong> monitor, log, or transmit your browsing activity. No browsing data ever leaves your browser.</p>
+
+    <h2>10. Data Retention & Deletion</h2>
+    <ul>
+      <li><strong>Uninstalling the extension</strong> removes all locally stored data (preferences, sessions, cached license status)</li>
+      <li><strong>Cancelling your subscription</strong> marks your license as inactive in our database</li>
+      <li><strong>To delete your data entirely</strong>, email <a href="mailto:algomittens@gmail.com">algomittens@gmail.com</a> and we will remove your record from Supabase within 30 days</li>
+    </ul>
+
+    <h2>11. Children's Privacy</h2>
+    <p>HorizantalTabs is not directed at children under 13. We do not knowingly collect data from children. If you believe a child has provided us with personal information, contact us and we will delete it.</p>
+
+    <h2>12. Security</h2>
+    <p>All communication between the extension and our servers uses HTTPS/TLS encryption. License verification uses Supabase's row-level security to ensure users can only read their own license status.</p>
+
+    <h2>13. Changes to This Policy</h2>
+    <p>We may update this policy from time to time. Changes will be posted on this page with an updated date. Continued use of the extension after changes constitutes acceptance.</p>
+
+    <h2>14. Chrome Web Store Compliance</h2>
+    <p>This extension complies with the <a href="https://developer.chrome.com/docs/webstore/program-policies/" target="_blank">Chrome Web Store Developer Program Policies</a>, including the limited use requirements for the Tabs API.</p>
+
+    <h2>15. Contact</h2>
+    <p>For questions, concerns, or data deletion requests:<br>
+    <strong>Algomittens LLC</strong><br>
+    <a href="mailto:algomittens@gmail.com">algomittens@gmail.com</a></p>
+  </div>
+
+  <footer>
+    <div>&copy; 2026 Algomittens LLC. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="mailto:algomittens@gmail.com">Contact</a>
+    </div>
+  </footer>
+
+</body>
+</html>

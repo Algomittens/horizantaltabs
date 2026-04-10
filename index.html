@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HorizantalTabs — Scroll Through Your Tabs</title>
+  <meta name="description" content="A Chrome extension that lets you scroll through all your tabs horizontally. Search, switch, drag to reorder. For power users with too many tabs.">
+  <link rel="icon" type="image/png" href="icon-128.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --accent: #3BBFA0;
+      --accent-bright: #5CD4B8;
+      --accent-dim: #2CA882;
+      --accent-glow: rgba(59, 191, 160, 0.15);
+      --accent-gradient: linear-gradient(135deg, #5CD4B8, #3BBFA0, #2CA882);
+
+      --bg-primary: #06080a;
+      --bg-secondary: #0c0e12;
+      --bg-card: rgba(14, 16, 22, 0.7);
+      --bg-elevated: #131520;
+
+      --text-primary: #ededf0;
+      --text-secondary: #8888a0;
+      --text-muted: #4a4a60;
+
+      --border: rgba(255, 255, 255, 0.06);
+      --border-light: rgba(255, 255, 255, 0.08);
+
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 15% 10%, rgba(59, 191, 160, 0.08), transparent),
+        radial-gradient(ellipse 50% 40% at 85% 90%, rgba(59, 191, 160, 0.04), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    a { color: var(--accent-bright); text-decoration: none; transition: color .2s; }
+    a:hover { color: var(--accent); }
+
+    /* ── Nav ────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 64px;
+      background: rgba(6, 8, 10, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-size: 18px; font-weight: 700; color: var(--text-primary);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .logo img { width: 28px; height: 28px; border-radius: 6px; }
+    .logo span {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a { color: var(--text-secondary); font-size: 14px; font-weight: 500; }
+    .nav-links a:hover { color: var(--text-primary); }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 22px; border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 600;
+      border: none; cursor: pointer; transition: all .2s;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: linear-gradient(180deg, #5CD4B8 0%, #3BBFA0 50%, #2CA882 100%);
+      color: #fff;
+      box-shadow: 0 1px 2px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.15);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(59, 191, 160, 0.3);
+      color: #fff;
+    }
+    .btn-secondary {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border-light);
+    }
+    .btn-secondary:hover { border-color: var(--accent); }
+
+    /* ── Hero ───────────────────────────────────── */
+    .hero {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 160px 24px 80px;
+      max-width: 800px; margin: 0 auto;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 800; line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: 18px; color: var(--text-secondary);
+      max-width: 560px; margin: 0 auto 36px;
+    }
+    .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── Features ───────────────────────────────── */
+    .section {
+      position: relative; z-index: 1;
+      max-width: 1080px; margin: 0 auto;
+      padding: 80px 24px;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 32px; font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .section-sub {
+      text-align: center;
+      font-size: 16px; color: var(--text-secondary);
+      max-width: 560px; margin: 0 auto 48px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: border-color .2s, transform .2s;
+    }
+    .feature-card:hover {
+      border-color: rgba(59, 191, 160, 0.25);
+      transform: translateY(-2px);
+    }
+    .feature-icon {
+      width: 40px; height: 40px;
+      background: var(--accent-glow);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+    .feature-card h3 {
+      font-size: 16px; font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 14px; color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ── How It Works ──────────────────────────── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      counter-reset: step;
+    }
+    .step {
+      text-align: center;
+      counter-increment: step;
+    }
+    .step::before {
+      content: counter(step);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px;
+      background: var(--accent-glow);
+      color: var(--accent-bright);
+      font-weight: 700; font-size: 18px;
+      border-radius: 50%;
+      border: 1px solid rgba(59, 191, 160, 0.2);
+      margin-bottom: 16px;
+    }
+    .step h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .step p { font-size: 14px; color: var(--text-secondary); }
+
+    /* ── Pricing ────────────────────────────────── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .price-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+    }
+    .price-card.featured {
+      border-color: rgba(59, 191, 160, 0.4);
+      box-shadow: 0 0 40px rgba(59, 191, 160, 0.08);
+    }
+    .price-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .price-card .price {
+      font-size: 36px; font-weight: 800; margin: 12px 0;
+    }
+    .price-card .price small {
+      font-size: 14px; font-weight: 500; color: var(--text-secondary);
+    }
+    .price-card ul {
+      list-style: none; margin: 20px 0 24px;
+    }
+    .price-card li {
+      font-size: 14px; color: var(--text-secondary);
+      padding: 6px 0;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .price-card li::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .price-card .btn { width: 100%; justify-content: center; }
+
+    /* ── CTA ────────────────────────────────────── */
+    .cta-box {
+      text-align: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 56px 32px;
+      margin-top: 40px;
+    }
+    .cta-box h2 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+    .cta-box p { color: var(--text-secondary); margin-bottom: 28px; }
+
+    /* ── Footer ─────────────────────────────────── */
+    footer {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 48px 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    footer a { color: var(--text-secondary); }
+    .footer-links { display: flex; gap: 24px; justify-content: center; margin-top: 12px; }
+
+    /* ── Responsive ─────────────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 0 16px; }
+      .nav-links a:not(.btn) { display: none; }
+      .features-grid, .steps { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .hero { padding: 120px 16px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">
+      <img src="icon-128.png" alt="HorizantalTabs">
+      Horizantal<span>Tabs</span>
+    </div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="#" class="btn btn-primary" id="cws-link">Add to Chrome</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Too many tabs?<br><em>Scroll through them.</em></h1>
+    <p>A Chrome extension that shows all your tabs in a horizontal strip. Search, switch, drag to reorder. Built for people who live in their browser.</p>
+    <div class="hero-btns">
+      <a href="#" class="btn btn-primary" id="cws-link-hero">Add to Chrome &mdash; Free</a>
+      <a href="#features" class="btn btn-secondary">See features</a>
+    </div>
+  </section>
+
+  <section class="section" id="how">
+    <h2 class="section-title">How it works</h2>
+    <p class="section-sub">Open the popup, see every tab at a glance, click to switch.</p>
+    <div class="steps">
+      <div class="step">
+        <h3>Open the popup</h3>
+        <p>Click the icon or press <kbd>Alt+A</kbd>. Every tab appears as a horizontal card.</p>
+      </div>
+      <div class="step">
+        <h3>Find & switch</h3>
+        <p>Start typing to search. Click any tab to switch. Arrow keys to navigate.</p>
+      </div>
+      <div class="step">
+        <h3>Organize</h3>
+        <p>Drag to reorder. Right-click for options. Close tabs with a single click.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <h2 class="section-title">Features</h2>
+    <p class="section-sub">Everything you need to manage too many tabs, nothing you don't.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">&#8596;</div>
+        <h3>Horizontal Scrolling</h3>
+        <p>See all your tabs in a clean horizontal strip. Scroll with mouse wheel or arrow buttons.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#128269;</div>
+        <h3>Instant Search</h3>
+        <p>Just start typing. Tabs filter by title or URL in real time.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#9998;</div>
+        <h3>Drag & Drop</h3>
+        <p>Drag tabs to reorder them. Works with pinned tabs and tab groups.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#128247;</div>
+        <h3>Tab Thumbnails</h3>
+        <p>Hover over any tab to see a live preview. Pro feature.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#128190;</div>
+        <h3>Session Save</h3>
+        <p>Save your current tabs as a session and restore them later. Pro feature.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#8617;</div>
+        <h3>Undo Close</h3>
+        <p>Accidentally closed a tab? Hit Ctrl+Z or click Undo. Pro feature.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pricing">
+    <h2 class="section-title">Simple pricing</h2>
+    <p class="section-sub">Start free. Upgrade when you want more.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <h3>Free</h3>
+        <div class="price">$0</div>
+        <ul>
+          <li>Horizontal tab scrolling</li>
+          <li>Instant search</li>
+          <li>Drag & drop reorder</li>
+          <li>Tab groups support</li>
+          <li>Keyboard navigation</li>
+          <li>Badge tab count</li>
+        </ul>
+        <a href="#" class="btn btn-secondary">Add to Chrome</a>
+      </div>
+      <div class="price-card featured">
+        <h3>Pro</h3>
+        <div class="price">$1.99<small>/month</small></div>
+        <ul>
+          <li>Everything in Free</li>
+          <li>Tab thumbnails on hover</li>
+          <li>Session save & restore</li>
+          <li>Recently closed tabs</li>
+          <li>Undo close (Ctrl+Z)</li>
+          <li>Export all tab URLs</li>
+          <li>Compact mode</li>
+          <li>Multi-window support</li>
+          <li>Click-to-mute audio tabs</li>
+        </ul>
+        <a href="https://buy.stripe.com/7sY4gs5BY9F55ba2su2B201" class="btn btn-primary">Upgrade to Pro</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="cta-box">
+      <h2>Your tabs deserve better.</h2>
+      <p>Stop squinting at tiny tab titles. Start scrolling.</p>
+      <a href="#" class="btn btn-primary">Add to Chrome &mdash; Free</a>
+    </div>
+  </section>
+
+  <footer>
+    <div>&copy; 2026 Algomittens LLC. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="mailto:algomittens@gmail.com">Contact</a>
+    </div>
+  </footer>
+
+</body>
+</html>

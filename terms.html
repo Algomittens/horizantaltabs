@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service — HorizantalTabs</title>
+  <link rel="icon" type="image/png" href="icon-128.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --accent: #3BBFA0;
+      --accent-bright: #5CD4B8;
+      --accent-gradient: linear-gradient(135deg, #5CD4B8, #3BBFA0, #2CA882);
+      --bg-primary: #06080a;
+      --bg-card: rgba(14, 16, 22, 0.7);
+      --text-primary: #ededf0;
+      --text-secondary: #8888a0;
+      --text-muted: #4a4a60;
+      --border: rgba(255, 255, 255, 0.06);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 15% 10%, rgba(59, 191, 160, 0.06), transparent);
+      pointer-events: none;
+    }
+    a { color: var(--accent-bright); text-decoration: none; }
+    a:hover { color: var(--accent); }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 64px;
+      background: rgba(6, 8, 10, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-size: 18px; font-weight: 700; color: var(--text-primary);
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .logo img { width: 28px; height: 28px; border-radius: 6px; }
+    .logo span {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a { color: var(--text-secondary); font-size: 14px; font-weight: 500; }
+    .nav-links a:hover { color: var(--text-primary); }
+
+    .content {
+      position: relative; z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 120px 24px 80px;
+    }
+    .content h1 {
+      font-size: 36px; font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .content .updated {
+      font-size: 14px; color: var(--text-muted);
+      margin-bottom: 40px;
+    }
+    .content h2 {
+      font-size: 20px; font-weight: 600;
+      margin-top: 40px; margin-bottom: 12px;
+      color: var(--accent-bright);
+    }
+    .content p, .content li {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+    .content ul, .content ol {
+      padding-left: 20px;
+      margin-bottom: 16px;
+    }
+    .content li { margin-bottom: 6px; }
+    .content strong { color: var(--text-primary); }
+
+    footer {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 48px 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    footer a { color: var(--text-secondary); }
+    .footer-links { display: flex; gap: 24px; justify-content: center; margin-top: 12px; }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 16px; }
+      .content { padding: 100px 16px 60px; }
+      .content h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">
+      <img src="icon-128.png" alt="HorizantalTabs">
+      Horizantal<span>Tabs</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </nav>
+
+  <div class="content">
+    <h1>Terms of Service</h1>
+    <p class="updated">Last updated: April 10, 2026</p>
+
+    <h2>1. Acceptance</h2>
+    <p>By installing or using HorizantalTabs ("the Extension"), you agree to these Terms of Service. If you do not agree, do not install or use the Extension.</p>
+
+    <h2>2. Description of Service</h2>
+    <p>HorizantalTabs is a Chrome browser extension that provides horizontal tab management. It displays open tabs in a scrollable strip, allowing users to search, switch, reorder, and organize tabs. A paid "Pro" tier offers additional features including tab thumbnails, session saving, undo close, and multi-window support.</p>
+
+    <h2>3. Eligibility</h2>
+    <p>You must be at least 13 years old to use this Extension. By using it, you represent that you meet this requirement.</p>
+
+    <h2>4. Free & Pro Tiers</h2>
+    <p>The Extension offers a free tier with core tab management features. The Pro tier ($1.99/month) unlocks additional features. Pro features are clearly marked within the Extension interface.</p>
+
+    <h2>5. Subscriptions & Billing</h2>
+    <ul>
+      <li>Pro subscriptions are billed monthly through <strong>Stripe</strong></li>
+      <li>Your subscription renews automatically each month until cancelled</li>
+      <li>You may cancel at any time through your Stripe billing portal</li>
+      <li>Refunds are available within <strong>7 days</strong> of initial purchase by contacting <a href="mailto:algomittens@gmail.com">algomittens@gmail.com</a></li>
+      <li>We reserve the right to change pricing with 30 days' notice</li>
+    </ul>
+
+    <h2>6. License</h2>
+    <p>We grant you a limited, non-exclusive, non-transferable, revocable license to use the Extension for personal or professional purposes, subject to these Terms.</p>
+
+    <h2>7. Acceptable Use</h2>
+    <p>You agree not to:</p>
+    <ul>
+      <li>Reverse-engineer, decompile, or disassemble the Extension</li>
+      <li>Redistribute, resell, or sublicense the Extension or Pro features</li>
+      <li>Use the Extension to violate any applicable laws</li>
+      <li>Attempt to circumvent the license verification system</li>
+      <li>Share Pro credentials with others to avoid payment</li>
+    </ul>
+
+    <h2>8. Intellectual Property</h2>
+    <p>The Extension, including all code, design, and branding, is the property of <strong>Algomittens LLC</strong>. All rights not explicitly granted are reserved.</p>
+
+    <h2>9. Data & Privacy</h2>
+    <p>Your use of the Extension is also governed by our <a href="privacy.html">Privacy Policy</a>. By using the Extension, you consent to the data practices described therein.</p>
+
+    <h2>10. Disclaimer of Warranties</h2>
+    <p>The Extension is provided "as is" without warranty of any kind, express or implied. We do not guarantee that the Extension will be error-free, uninterrupted, or compatible with all browser versions.</p>
+
+    <h2>11. Limitation of Liability</h2>
+    <p>To the maximum extent permitted by law, Algomittens LLC shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of the Extension. Our total liability shall not exceed the amount you paid us in the 12 months preceding the claim.</p>
+
+    <h2>12. Termination</h2>
+    <p>We may terminate or suspend your access to Pro features at any time for violation of these Terms. You may stop using the Extension at any time by uninstalling it.</p>
+
+    <h2>13. Changes to Terms</h2>
+    <p>We may update these Terms from time to time. Changes will be posted on this page with an updated date. Continued use after changes constitutes acceptance of the revised Terms.</p>
+
+    <h2>14. Governing Law</h2>
+    <p>These Terms are governed by the laws of the United States. Any disputes shall be resolved in the courts of the State of Delaware.</p>
+
+    <h2>15. Contact</h2>
+    <p>For questions about these Terms:<br>
+    <strong>Algomittens LLC</strong><br>
+    <a href="mailto:algomittens@gmail.com">algomittens@gmail.com</a></p>
+  </div>
+
+  <footer>
+    <div>&copy; 2026 Algomittens LLC. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="mailto:algomittens@gmail.com">Contact</a>
+    </div>
+  </footer>
+
+</body>
+</html>
