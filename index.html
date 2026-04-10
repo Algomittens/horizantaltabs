@@ -224,11 +224,13 @@
       display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto;
     }
     .chrome-ext-icon {
-      width: 20px; height: 20px; border-radius: 4px;
+      width: 24px; height: 24px; border-radius: 4px;
       cursor: pointer; position: relative;
       transition: transform .15s;
+      padding: 2px;
+      z-index: 5;
     }
-    .chrome-ext-icon:hover { transform: scale(1.1); }
+    .chrome-ext-icon:hover { transform: scale(1.15); }
     .chrome-ext-icon img { width: 100%; height: 100%; border-radius: 4px; }
     .chrome-ext-badge {
       position: absolute; top: -4px; right: -6px;
@@ -242,6 +244,7 @@
     }
     .chrome-dots {
       display: flex; gap: 3px; margin-left: 4px;
+      pointer-events: none;
     }
     .chrome-dots span {
       width: 3px; height: 3px; border-radius: 50%;
@@ -414,6 +417,80 @@
       opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 20;
     }
     .mockup-toast.visible { opacity: 1; }
+    /* ── Floating bar inside chrome-page ── */
+    .mock-floater {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 15;
+      background: #1f1f1f;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      display: flex; align-items: center; gap: 4px;
+      padding: 4px 8px; height: 38px;
+      opacity: 0; transform: translateY(-100%);
+      transition: opacity .35s ease, transform .35s ease;
+      box-shadow: 0 2px 12px rgba(0,0,0,.35);
+      pointer-events: none;
+    }
+    .mock-floater.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .mock-floater .fl-arrow {
+      flex-shrink: 0; width: 20px; height: 28px; color: #3BBFA0;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: color .15s, transform .15s;
+    }
+    .mock-floater .fl-arrow:hover { color: #5CD4B8; transform: scale(1.15); }
+    .mock-floater .fl-arrow:active { transform: scale(.9); }
+    .mock-floater .fl-strip {
+      flex: 1; display: flex; align-items: center; gap: 2px;
+      overflow-x: auto; overflow-y: hidden; padding: 0 4px;
+      scroll-behavior: smooth; cursor: grab;
+    }
+    .mock-floater .fl-strip::-webkit-scrollbar { height: 0; }
+    .mock-floater .fl-tab {
+      flex-shrink: 0; display: flex; align-items: center; gap: 5px;
+      padding: 0 8px; height: 26px;
+      border-radius: 5px; background: transparent;
+      color: #9aa0a6; font-size: 11px; white-space: nowrap;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .mock-floater .fl-tab:hover {
+      background: #353535; color: #e8eaed;
+    }
+    .mock-floater .fl-tab.active {
+      background: #333; color: #e8eaed; font-weight: 500;
+    }
+    .mock-floater .fl-tab .fl-dot {
+      width: 14px; height: 14px; border-radius: 2px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8px; font-weight: 700; color: #fff;
+    }
+    .mock-floater .fl-icons {
+      display: flex; align-items: center; gap: 3px; flex-shrink: 0;
+    }
+    .mock-floater .fl-icon {
+      width: 22px; height: 22px; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      color: #6e7278;
+    }
+    .mock-floater .fl-close {
+      width: 22px; height: 22px; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      color: #6e7278; cursor: pointer;
+    }
+    .mock-floater .fl-close:hover { color: #f87171; }
+    .mock-floater .fl-icon:hover { color: #e8eaed; }
+    .mock-floater .fl-icon.active { color: #3BBFA0; }
+    .mock-floater .fl-search-input {
+      width: 0; max-width: 0; border: none; outline: none;
+      background: rgba(255,255,255,.06); color: #e8eaed;
+      font-size: 11px; padding: 0; border-radius: 4px; height: 22px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      transition: max-width .25s ease, padding .25s ease, width .25s ease;
+    }
+    .mock-floater .fl-search-input.open {
+      width: 140px; max-width: 140px; padding: 0 8px;
+    }
+    .mock-floater.pinned {
+      box-shadow: 0 2px 8px rgba(59,191,160,.25);
+      border-bottom-color: #3BBFA0;
+    }
     /* Cursor hint animation */
     .cursor-hint {
       position: absolute; z-index: 30; pointer-events: none;
@@ -616,7 +693,7 @@
 
   <section class="hero">
     <h1>Do you wish you can <em>horizantally scroll</em> your tabs?</h1>
-    <p>HorizantalTabs puts them all in a scrollable strip so you can actually find the one you're looking for.</p>
+    <p>HorizantalTabs puts them all in a scrollable strip so you can actually find the one you're looking for. And More!</p>
     <div class="hero-btns">
       <a href="#" class="btn btn-outline-accent" id="cws-link-hero">Add to Chrome</a>
       <a href="#features" class="btn btn-secondary">What's in it</a>
@@ -672,6 +749,38 @@
         <div class="chrome-page-line" style="width:70%"></div>
         <div class="chrome-page-line" style="width:55%"></div>
         <div class="chrome-page-line" style="width:75%"></div>
+        <!-- Floating bar demo -->
+        <div class="mock-floater" id="mock-floater-bar">
+          <div class="fl-arrow" style="cursor:pointer"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg></div>
+          <div class="fl-strip">
+            <div class="fl-tab" style="border-left:2px solid #f28b82;padding-left:6px"><div class="fl-dot" style="background:#ea4335">G</div><span>Gmail (3)</span></div>
+            <div class="fl-tab" style="border-left:2px solid #f28b82;padding-left:6px"><div class="fl-dot" style="background:#4285f4">D</div><span>Drive</span></div>
+            <div class="fl-tab active" style="border-left:2px solid #81c995;padding-left:6px"><div class="fl-dot" style="background:#333"><svg viewBox="0 0 16 16" width="10" height="10" fill="#fff"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></div><span>GitHub PR #47</span></div>
+            <div class="fl-tab" style="border-left:2px solid #81c995;padding-left:6px"><div class="fl-dot" style="background:#f48024">S</div><span>Stack Overflow</span></div>
+            <div class="fl-tab"><div class="fl-dot" style="background:#a259ff">F</div><span>Figma</span></div>
+            <div class="fl-tab"><div class="fl-dot" style="background:#000"><svg viewBox="0 0 16 16" width="8" height="8" fill="#fff"><path d="M4.5 1h7L15 4.5v7L11.5 15h-7L1 11.5v-7L4.5 1z"/></svg></div><span>Notion</span></div>
+            <div class="fl-tab"><div class="fl-dot" style="background:#ff0000"><svg viewBox="0 0 16 16" width="8" height="8" fill="#fff"><path d="M6 4v8l6-4-6-4z"/></svg></div><span>YouTube</span></div>
+            <div class="fl-tab"><div class="fl-dot" style="background:#1da1f2">T</div><span>Twitter / X</span></div>
+            <div class="fl-tab"><div class="fl-dot" style="background:#ff9900">A</div><span>Amazon</span></div>
+            <div class="fl-tab"><div class="fl-dot" style="background:#5f259f">S</div><span>Stripe</span></div>
+            <div class="fl-tab"><div class="fl-dot" style="background:#0a66c2">L</div><span>LinkedIn</span></div>
+            <div class="fl-tab"><div class="fl-dot" style="background:#34a853">S</div><span>Sheets</span></div>
+            <div class="fl-tab"><div class="fl-dot" style="background:#7b68ee">D</div><span>Discord</span></div>
+            <div class="fl-tab"><div class="fl-dot" style="background:#e44d26">R</div><span>Reddit</span></div>
+            <div class="fl-tab"><div class="fl-dot" style="background:#1db954">S</div><span>Spotify</span></div>
+            <div class="fl-tab"><div class="fl-dot" style="background:#00b900">W</div><span>WhatsApp</span></div>
+            <div class="fl-tab"><div class="fl-dot" style="background:#6441a5">T</div><span>Twitch</span></div>
+            <div class="fl-tab"><div class="fl-dot" style="background:#ff6600">H</div><span>Hacker News</span></div>
+          </div>
+          <div class="fl-arrow" style="cursor:pointer"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+          <div class="fl-icons">
+            <input class="fl-search-input" id="fl-search-input" type="text" placeholder="Search tabs..." spellcheck="false">
+            <div class="fl-icon" id="fl-search" style="cursor:pointer" title="Search"><svg viewBox="0 0 16 16" width="12" height="12"><circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="10" y1="10" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <div class="fl-icon" id="fl-theme" style="cursor:pointer" title="Theme"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/></svg></div>
+            <div class="fl-icon" id="fl-pin" style="cursor:pointer" title="Pin bar"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 17v5"/><path d="M5 17h14"/><path d="M15 3.36L9 3.36 7.5 10.5h9L15 3.36z"/></svg></div>
+            <div class="fl-close" id="mock-floater-close" style="cursor:pointer" title="Close"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+          </div>
+        </div>
         <div class="cursor-hint" id="cursor-hint">
           <span class="cursor-hint-label">try me!</span>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 01.35-.15h6.87c.48 0 .68-.61.3-.92L5.93 2.88a.5.5 0 00-.43.33z" fill="#fff" stroke="#333" stroke-width="1.5"/></svg>
@@ -692,7 +801,8 @@
         <div class="mockup-tbtn" id="mock-compact"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="tooltip">Compact mode</span></div>
         <div class="mockup-tbtn" id="mock-rows"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/></svg><span class="tooltip">Multi-row</span></div>
         <div class="mockup-tbtn" id="mock-export"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg><span class="tooltip">Export URLs</span></div>
-        <div class="mockup-tbtn" id="mock-session"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg><span class="tooltip">Sessions</span></div>
+        <div class="mockup-tbtn" id="mock-session"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg><span class="tooltip">Save tabs</span></div>
+        <div class="mockup-tbtn" id="mock-float"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="4" rx="1"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="6" y1="16" x2="14" y2="16"/></svg><span class="tooltip">Float on page</span></div>
         <div class="mockup-tbtn" id="mock-collapse"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#3BBFA0" stroke-width="2" stroke-linecap="round"><polyline points="18 14 12 8 6 14"/><polyline points="18 20 12 14 6 20"/></svg><span class="tooltip">Hide toolbar</span></div>
       </div>
       <!-- Tab strip -->
@@ -727,14 +837,13 @@
         </div><!-- /popup-wrapper -->
       </div><!-- /chrome-page -->
     </div><!-- /chrome-window -->
-    <div class="demo-caption">That's it. That's the extension.</div>
   </div>
 
   <section class="section" id="features">
     <h2 class="section-title">What you get</h2>
     <div class="features-list">
       <div class="feature-row">
-        <span class="feature-name">Horizontal strip</span>
+        <span class="feature-name">Horizontal scrolling</span>
         <span class="feature-desc">All your tabs in a row. Scroll with your mouse wheel.</span>
         <span class="feature-tag-free">Free</span>
       </div>
@@ -774,7 +883,7 @@
         <span class="feature-tag">Pro</span>
       </div>
       <div class="feature-row">
-        <span class="feature-name pro">Sessions</span>
+        <span class="feature-name pro">Save tabs</span>
         <span class="feature-desc">Save all your tabs, close them, restore them later.</span>
         <span class="feature-tag">Pro</span>
       </div>
@@ -803,6 +912,21 @@
         <span class="feature-desc">Copy every open tab URL to your clipboard.</span>
         <span class="feature-tag">Pro</span>
       </div>
+      <div class="feature-row">
+        <span class="feature-name pro">Floating bar</span>
+        <span class="feature-desc">Pin the tab strip to any page. Drag, resize, always visible.</span>
+        <span class="feature-tag">Pro</span>
+      </div>
+      <div class="feature-row">
+        <span class="feature-name pro">Mute tabs</span>
+        <span class="feature-desc">Mute any tab with one click. See which tabs are playing audio.</span>
+        <span class="feature-tag">Pro</span>
+      </div>
+      <div class="feature-row">
+        <span class="feature-name pro">Right-click menu</span>
+        <span class="feature-desc">Pin, duplicate, mute, close others, close to right &mdash; all from a right-click.</span>
+        <span class="feature-tag">Pro</span>
+      </div>
     </div>
   </section>
 
@@ -813,12 +937,13 @@
         <div class="price-label">Free</div>
         <div class="price-amount">$0</div>
         <ul>
-          <li>Horizontal tab strip</li>
+          <li>Horizontal scrolling</li>
           <li>Search</li>
-          <li>Drag & drop</li>
+          <li>Drag to reorder</li>
           <li>Tab groups</li>
-          <li>Keyboard shortcuts</li>
-          <li>Badge count</li>
+          <li>Keyboard nav</li>
+          <li>Tab count badge</li>
+          <li>Light / Dark theme</li>
         </ul>
         <a href="#" class="btn btn-outline-accent">Add to Chrome</a>
       </div>
@@ -828,13 +953,15 @@
         <ul>
           <li>Everything free</li>
           <li>Thumbnails</li>
-          <li>Sessions</li>
+          <li>Save tabs</li>
           <li>Undo close</li>
           <li>Multi-window</li>
           <li>Compact mode</li>
           <li>Multi-row layout</li>
           <li>Export URLs</li>
+          <li>Floating bar</li>
           <li>Mute tabs</li>
+          <li>Right-click menu</li>
         </ul>
         <a href="https://buy.stripe.com/7sY4gs5BY9F55ba2su2B201" class="btn btn-outline-accent">Get Pro</a>
       </div>
@@ -925,6 +1052,15 @@
       expandBtn.classList.remove('visible');
     });
 
+    // Floater state (must be declared before extIcon handler references it)
+    const floatBtn = document.getElementById('mock-float');
+    const floaterBar = document.getElementById('mock-floater-bar');
+    const floaterClose = document.getElementById('mock-floater-close');
+    const flStrip = floaterBar.querySelector('.fl-strip');
+    const flLeft = floaterBar.querySelector('.fl-arrow');
+    const flRight = floaterBar.querySelectorAll('.fl-arrow')[1];
+    let floaterActive = false;
+
     // Click extension icon to toggle popup
     const extIcon = document.getElementById('mock-ext-icon');
     const popupWrapper = document.getElementById('popup-wrapper');
@@ -936,6 +1072,14 @@
 
     extIcon.addEventListener('click', () => {
       cursorHint.style.display = 'none';
+      // If floater is active, close it and show popup instead
+      if (floaterActive) {
+        floaterBar.classList.remove('visible');
+        floaterActive = false;
+        floatBtn.classList.remove('active');
+        setTimeout(() => { popupWrapper.style.display = 'block'; }, 350);
+        return;
+      }
       const showing = popupWrapper.style.display === 'none';
       popupWrapper.style.display = showing ? 'block' : 'none';
       if (showing && !popupOpened) {
@@ -968,7 +1112,8 @@
     const hintTryus = document.getElementById('hint-tryus');
     const blingBtns = [document.getElementById('mock-badge'), document.getElementById('mock-theme'),
                        document.getElementById('mock-compact'), document.getElementById('mock-rows'),
-                       document.getElementById('mock-export'), document.getElementById('mock-session')];
+                       document.getElementById('mock-export'), document.getElementById('mock-session'),
+                       document.getElementById('mock-float')];
     expandBtn.addEventListener('click', () => {
       hintUnhide.classList.remove('visible');
       setTimeout(() => {
@@ -1061,6 +1206,121 @@
       showToast('Session saved');
       sessionBtn.classList.add('active');
       setTimeout(() => sessionBtn.classList.remove('active'), 1200);
+    });
+
+    // Float on page — animate popup away, show floating bar inside chrome-page
+    floatBtn.addEventListener('click', () => {
+      if (floaterActive) return;
+      floaterActive = true;
+      floatBtn.classList.add('active');
+
+      // Hide the popup dropdown
+      popupWrapper.style.transition = 'opacity .3s ease, transform .3s ease';
+      popupWrapper.style.opacity = '0';
+      popupWrapper.style.transform = 'translateY(-10px) scale(0.97)';
+      setTimeout(() => {
+        popupWrapper.style.display = 'none';
+        popupWrapper.style.transition = '';
+        popupWrapper.style.opacity = '';
+        popupWrapper.style.transform = '';
+        // Slide in the floating bar
+        floaterBar.classList.add('visible');
+      }, 320);
+    });
+
+    // Close floating bar — restore popup dropdown
+    floaterClose.addEventListener('click', () => {
+      floaterBar.classList.remove('visible');
+      floaterActive = false;
+      floatBtn.classList.remove('active');
+      setTimeout(() => {
+        popupWrapper.style.display = 'block';
+      }, 350);
+    });
+
+    // Floater arrow scrolling
+    flLeft.addEventListener('click', () => flStrip.scrollBy({ left: -150, behavior: 'smooth' }));
+    flRight.addEventListener('click', () => flStrip.scrollBy({ left: 150, behavior: 'smooth' }));
+
+    // Floater mouse wheel
+    flStrip.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      flStrip.scrollBy({ left: e.deltaY > 0 ? 100 : -100 });
+    }, { passive: false });
+
+    // Floater click-drag to scroll
+    let flDragging = false, flDragMoved = false, flStartX, flScrollStart;
+    flStrip.addEventListener('mousedown', (e) => {
+      flDragging = true; flDragMoved = false;
+      flStartX = e.pageX; flScrollStart = flStrip.scrollLeft;
+      flStrip.style.cursor = 'grabbing';
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!flDragging) return;
+      if (Math.abs(e.pageX - flStartX) > 3) flDragMoved = true;
+      flStrip.scrollLeft = flScrollStart - (e.pageX - flStartX);
+    });
+    window.addEventListener('mouseup', () => {
+      if (flDragging) { flDragging = false; flStrip.style.cursor = 'grab'; }
+    });
+
+    // Floater click tab to activate
+    flStrip.addEventListener('click', (e) => {
+      const tab = e.target.closest('.fl-tab');
+      if (!tab || flDragMoved) return;
+      flStrip.querySelectorAll('.fl-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+
+    // Floater search toggle
+    const flSearchBtn = document.getElementById('fl-search');
+    const flSearchInput = document.getElementById('fl-search-input');
+    flSearchBtn.addEventListener('click', () => {
+      const open = flSearchInput.classList.toggle('open');
+      flSearchBtn.classList.toggle('active', open);
+      if (open) {
+        flSearchInput.focus();
+      } else {
+        flSearchInput.value = '';
+        flStrip.querySelectorAll('.fl-tab').forEach(t => t.style.display = '');
+      }
+    });
+    // Live filter floater tabs
+    flSearchInput.addEventListener('input', () => {
+      const q = flSearchInput.value.toLowerCase();
+      flStrip.querySelectorAll('.fl-tab').forEach(t => {
+        const text = t.textContent.toLowerCase();
+        t.style.display = q && !text.includes(q) ? 'none' : '';
+      });
+    });
+
+    // Floater pin toggle
+    const flPinBtn = document.getElementById('fl-pin');
+    const chromePage = document.querySelector('.chrome-page');
+    flPinBtn.addEventListener('click', () => {
+      const pinned = floaterBar.classList.toggle('pinned');
+      flPinBtn.classList.toggle('active', pinned);
+      // Push page content down when pinned
+      chromePage.style.paddingTop = pinned ? '46px' : '';
+    });
+
+    // Floater theme toggle
+    const flThemeBtn = document.getElementById('fl-theme');
+    let flTheme = 'dark';
+    flThemeBtn.addEventListener('click', () => {
+      flTheme = flTheme === 'dark' ? 'light' : 'dark';
+      flThemeBtn.classList.toggle('active', flTheme === 'light');
+      if (flTheme === 'light') {
+        floaterBar.style.background = '#f0f1f4';
+        floaterBar.style.borderBottomColor = 'rgba(0,0,0,.1)';
+        flStrip.querySelectorAll('.fl-tab').forEach(t => t.style.color = t.classList.contains('active') ? '#202124' : '#5f6368');
+        floaterBar.querySelectorAll('.fl-icon, .fl-close').forEach(i => i.style.color = '#5f6368');
+      } else {
+        floaterBar.style.background = '';
+        floaterBar.style.borderBottomColor = '';
+        flStrip.querySelectorAll('.fl-tab').forEach(t => t.style.color = '');
+        floaterBar.querySelectorAll('.fl-icon, .fl-close').forEach(i => i.style.color = '');
+      }
     });
   </script>
 
