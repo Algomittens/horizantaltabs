@@ -427,8 +427,9 @@
       opacity: 0; transform: translateY(-100%);
       transition: opacity .35s ease, transform .35s ease;
       box-shadow: 0 2px 12px rgba(0,0,0,.35);
+      pointer-events: none;
     }
-    .mock-floater.visible { opacity: 1; transform: translateY(0); }
+    .mock-floater.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
     .mock-floater .fl-arrow {
       flex-shrink: 0; width: 20px; height: 28px; color: #3BBFA0;
       display: flex; align-items: center; justify-content: center;
