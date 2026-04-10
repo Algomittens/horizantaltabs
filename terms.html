@@ -44,7 +44,6 @@
       padding: 0 32px; height: 64px;
       background: rgba(6, 8, 10, 0.85);
       backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
     }
     .logo {
       font-size: 18px; font-weight: 700; color: var(--text-primary);
@@ -52,7 +51,7 @@
       text-decoration: none;
     }
     .logo img { width: 28px; height: 28px; border-radius: 6px; }
-    .logo span {
+    .logo-text span {
       background: var(--accent-gradient);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -94,19 +93,21 @@
 
     footer {
       position: relative; z-index: 1;
-      text-align: center;
-      padding: 48px 24px;
-      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 720px; margin: 0 auto;
+      padding: 28px 24px;
       color: var(--text-muted);
-      font-size: 13px;
+      font-size: 12.5px;
     }
-    footer a { color: var(--text-secondary); }
-    .footer-links { display: flex; gap: 24px; justify-content: center; margin-top: 12px; }
+    footer a { color: var(--text-muted); transition: color 0.15s; }
+    footer a:hover { color: var(--text-primary); }
+    .footer-links { display: flex; gap: 20px; }
 
     @media (max-width: 600px) {
       nav { padding: 0 16px; }
       .content { padding: 100px 16px 60px; }
       .content h1 { font-size: 28px; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
     }
   </style>
 </head>
@@ -115,7 +116,7 @@
   <nav>
     <a href="index.html" class="logo">
       <img src="icon-128.png" alt="HorizantalTabs">
-      Horizantal<span>Tabs</span>
+      <span class="logo-text">Horizantal<span>Tabs</span></span>
     </a>
     <div class="nav-links">
       <a href="index.html">Home</a>
@@ -189,7 +190,7 @@
   </div>
 
   <footer>
-    <div>&copy; 2026 Algomittens LLC. All rights reserved.</div>
+    <span>&copy; 2026 Algomittens LLC</span>
     <div class="footer-links">
       <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms of Service</a>

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy — HorizantalTabs</title>
+  <meta name="description" content="HorizantalTabs Privacy Policy — what we collect, how we use and handle it, where we store it, and who we share it with.">
   <link rel="icon" type="image/png" href="icon-128.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,7 +45,6 @@
       padding: 0 32px; height: 64px;
       background: rgba(6, 8, 10, 0.85);
       backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
     }
     .logo {
       font-size: 18px; font-weight: 700; color: var(--text-primary);
@@ -52,7 +52,7 @@
       text-decoration: none;
     }
     .logo img { width: 28px; height: 28px; border-radius: 6px; }
-    .logo span {
+    .logo-text span {
       background: var(--accent-gradient);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -115,19 +115,21 @@
 
     footer {
       position: relative; z-index: 1;
-      text-align: center;
-      padding: 48px 24px;
-      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 720px; margin: 0 auto;
+      padding: 28px 24px;
       color: var(--text-muted);
-      font-size: 13px;
+      font-size: 12.5px;
     }
-    footer a { color: var(--text-secondary); }
-    .footer-links { display: flex; gap: 24px; justify-content: center; margin-top: 12px; }
+    footer a { color: var(--text-muted); transition: color 0.15s; }
+    footer a:hover { color: var(--text-primary); }
+    .footer-links { display: flex; gap: 20px; }
 
     @media (max-width: 600px) {
       nav { padding: 0 16px; }
       .content { padding: 100px 16px 60px; }
       .content h1 { font-size: 28px; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
     }
   </style>
 </head>
@@ -136,7 +138,7 @@
   <nav>
     <a href="index.html" class="logo">
       <img src="icon-128.png" alt="HorizantalTabs">
-      Horizantal<span>Tabs</span>
+      <span class="logo-text">Horizantal<span>Tabs</span></span>
     </a>
     <div class="nav-links">
       <a href="index.html">Home</a>
@@ -148,96 +150,135 @@
     <h1>Privacy Policy</h1>
     <p class="updated">Last updated: April 10, 2026</p>
 
-    <h2>1. Who We Are</h2>
-    <p><strong>HorizantalTabs</strong> is a Chrome extension developed and operated by <strong>Algomittens LLC</strong>. If you have any questions about this policy, contact us at <a href="mailto:algomittens@gmail.com">algomittens@gmail.com</a>.</p>
+    <h2>Who We Are</h2>
+    <p>HorizantalTabs is a Chrome extension operated by Algomittens LLC ("we", "us", "our"). You can reach us at <a href="mailto:algomittens@gmail.com">algomittens@gmail.com</a>.</p>
 
-    <h2>2. Single Purpose</h2>
-    <p>HorizantalTabs provides horizontal tab management for Google Chrome. It displays your open tabs in a scrollable horizontal strip so you can search, switch, reorder, and organize tabs efficiently.</p>
+    <h2>Single Purpose</h2>
+    <p>HorizantalTabs' single purpose is to provide horizontal tab management for Google Chrome. It displays your open tabs in a scrollable horizontal strip so you can search, switch, reorder, group, and organize tabs efficiently. HorizantalTabs does not monitor your general browsing activity. It only reads tab metadata (titles, URLs, favicons) to display them in the extension popup.</p>
 
-    <h2>3. Data We Collect</h2>
-
-    <h3>3a. Tab Metadata (Local Only)</h3>
-    <p>The extension reads tab information (titles, URLs, favicons, group assignments) using the Chrome Tabs API. This data is used <strong>only within the extension popup</strong> to display your tabs. It is <strong>never sent to any server</strong>.</p>
-
-    <h3>3b. Email Address (Pro Users)</h3>
-    <p>If you upgrade to HorizantalTabs Pro, we store your email address to verify your license. Your email is stored in our database (Supabase) and is used solely for license verification.</p>
-
-    <h3>3c. Payment Information</h3>
-    <p>Payments are processed by <strong>Stripe</strong>. We do not store credit card numbers or payment details. Stripe handles all payment processing under their own <a href="https://stripe.com/privacy" target="_blank">privacy policy</a>.</p>
-
-    <h3>3d. Thumbnail Cache (Local Only)</h3>
-    <p>For Pro users, the extension captures low-resolution JPEG thumbnails of your active tab for the hover preview feature. These are stored <strong>only in the service worker's memory</strong> (never on disk, never sent to any server) and are cleared when Chrome closes.</p>
-
-    <h2>4. Data We Do NOT Collect</h2>
+    <h2>1. What Data We Collect</h2>
+    <p>HorizantalTabs collects only what is necessary to provide the service:</p>
     <ul>
-      <li>We do <strong>not</strong> track your browsing history</li>
-      <li>We do <strong>not</strong> read page content</li>
-      <li>We do <strong>not</strong> use analytics, tracking pixels, or fingerprinting</li>
-      <li>We do <strong>not</strong> sell, share, or monetize any user data</li>
-      <li>We do <strong>not</strong> use cookies</li>
+      <li><strong>Tab metadata:</strong> Tab titles, URLs, favicons, group assignments, and pinned/active state. This data is read via the Chrome Tabs API and used only within the extension popup to display your tabs. It is never sent to any server.</li>
+      <li><strong>Thumbnail cache:</strong> For Pro users, the extension captures low-resolution JPEG thumbnails of your active tab for the hover preview feature. These are stored only in the service worker's memory (never on disk, never sent to any server) and are cleared when Chrome closes.</li>
+      <li><strong>Saved sessions:</strong> Tab URLs and titles you choose to save as a session. Stored locally in <code>chrome.storage.local</code>.</li>
+      <li><strong>Preferences:</strong> Settings like compact mode, badge toggle, and layout preferences. Stored locally in <code>chrome.storage.local</code>.</li>
+      <li><strong>Email address (Pro users):</strong> If you upgrade to HorizantalTabs Pro, we store your email address to verify your license. Your email is stored in our database (Supabase) and is used solely for license verification.</li>
+      <li><strong>Subscription data:</strong> If you upgrade to a paid plan, Stripe processes your payment. We store your Stripe customer ID and subscription status — never your card number or payment details.</li>
     </ul>
 
-    <h2>5. Permissions Explained</h2>
+    <h2>2. How We Use Your Data</h2>
+    <p>Each type of data we collect serves a specific purpose:</p>
+    <ul>
+      <li><strong>Tab metadata</strong> is used to display your open tabs in the horizontal strip, enable search, and show tab group labels and colors.</li>
+      <li><strong>Thumbnails</strong> are used to show a preview when you hover over a tab in the strip (Pro only).</li>
+      <li><strong>Saved sessions</strong> are used to let you restore a group of tabs you previously saved.</li>
+      <li><strong>Preferences</strong> are used to remember your layout and display settings between sessions.</li>
+      <li><strong>Email address</strong> is used to verify your Pro license status.</li>
+      <li><strong>Subscription data</strong> is used to determine whether Pro features (thumbnails, unlimited sessions) are active for your account.</li>
+    </ul>
+
+    <h2>3. How We Handle Your Data</h2>
+    <p>We take the following measures to handle your data securely:</p>
+    <ul>
+      <li><strong>Encryption in transit:</strong> All data transmitted between the extension and our servers uses HTTPS (TLS 1.2+). No user data is ever sent over unencrypted HTTP connections.</li>
+      <li><strong>Local-first architecture:</strong> Tab metadata, thumbnails, saved sessions, and preferences are stored entirely on your device in <code>chrome.storage.local</code> and service worker memory. This data is not transmitted to our servers.</li>
+      <li><strong>Minimal server-side data:</strong> Our servers store only license verification data (email and subscription status). Tab data and preferences stay on your device.</li>
+      <li><strong>Row-level security:</strong> License verification uses Supabase's row-level security to ensure users can only read their own license status.</li>
+      <li><strong>No analytics or tracking:</strong> HorizantalTabs does not include any analytics libraries, telemetry, tracking pixels, or fingerprinting code.</li>
+    </ul>
+    <p>No method of transmission or storage is perfectly secure. While we use reasonable measures to protect your data, we cannot guarantee absolute security.</p>
+
+    <h2>4. Where Data Is Stored</h2>
+    <ul>
+      <li><strong>On your device:</strong> Tab metadata, thumbnails, saved sessions, preferences, and cached license status are stored locally in your browser's <code>chrome.storage.local</code> and service worker memory.</li>
+      <li><strong>Supabase (US-hosted):</strong> Email address and subscription status are stored in our Supabase-hosted PostgreSQL database.</li>
+      <li><strong>Stripe:</strong> Payment method details and billing history are stored by Stripe. We do not have access to your full card number.</li>
+    </ul>
+
+    <h2>5. Who We Share Data With</h2>
+    <p>We do not sell, rent, or share your personal data with third parties for advertising or marketing purposes. Data is shared only with the following service providers, solely to operate HorizantalTabs:</p>
+    <ul>
+      <li><strong>Supabase</strong> — license verification and subscription management. <a href="https://supabase.com/privacy" target="_blank" rel="noopener">Supabase Privacy Policy</a>.</li>
+      <li><strong>Stripe</strong> — payment processing for Pro subscriptions. <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Stripe Privacy Policy</a>.</li>
+    </ul>
+    <p>No other third parties receive any data from this extension.</p>
+
+    <h2>6. Permissions Explained</h2>
     <table>
       <tr><th>Permission</th><th>Why We Need It</th></tr>
-      <tr><td><strong>tabs</strong></td><td>Read tab titles, URLs, and state to display them in the popup</td></tr>
+      <tr><td><strong>tabs</strong></td><td>Read tab titles, URLs, and state to display them in the horizontal strip</td></tr>
       <tr><td><strong>activeTab</strong></td><td>Capture thumbnails of the currently active tab (Pro only)</td></tr>
       <tr><td><strong>tabGroups</strong></td><td>Read and display Chrome tab group labels and colors</td></tr>
       <tr><td><strong>storage</strong></td><td>Save your preferences (compact mode, badge toggle, license status) locally</td></tr>
     </table>
 
-    <h2>6. Data Storage</h2>
-    <table>
-      <tr><th>Data</th><th>Where</th><th>Duration</th></tr>
-      <tr><td>Tab metadata</td><td>Extension memory (local)</td><td>While popup is open</td></tr>
-      <tr><td>Thumbnails</td><td>Service worker memory (local)</td><td>Until Chrome closes</td></tr>
-      <tr><td>Preferences</td><td>chrome.storage.local</td><td>Until you uninstall</td></tr>
-      <tr><td>Saved sessions</td><td>chrome.storage.local</td><td>Until you delete them</td></tr>
-      <tr><td>License email</td><td>chrome.storage.local + Supabase (US)</td><td>Until cancellation</td></tr>
-      <tr><td>Payment records</td><td>Stripe</td><td>Per Stripe's policy</td></tr>
-    </table>
+    <h2>7. Web Browsing Activity</h2>
+    <p>HorizantalTabs does not collect or use your web browsing activity except as necessary to provide its single purpose of horizontal tab management. Any browsing-related information handled by HorizantalTabs is limited to tab titles and URLs, which are used only to display your tabs in the extension popup. HorizantalTabs does <strong>not</strong> collect your browsing history, track which websites you visit, or read page content. Tab metadata is stored only in the extension's local memory and is not transmitted to our servers.</p>
 
-    <h2>7. Third-Party Services</h2>
-    <p>We use the following third-party services:</p>
+    <h2>8. What We Don't Collect</h2>
     <ul>
-      <li><strong>Supabase</strong> (database, US-hosted) &mdash; stores license records (email + subscription status)</li>
-      <li><strong>Stripe</strong> (payment processing) &mdash; handles all payment transactions</li>
-    </ul>
-    <p>No other third parties receive any data from this extension.</p>
-
-    <h2>8. Data Sharing</h2>
-    <p>We do <strong>not</strong> sell, rent, or share your data with third parties for marketing or advertising purposes. Data is shared only with Supabase (license storage) and Stripe (payment processing) as described above.</p>
-
-    <h2>9. Web Browsing Activity</h2>
-    <p>The extension accesses tab URLs and titles solely to display them in the popup interface. We do <strong>not</strong> monitor, log, or transmit your browsing activity. No browsing data ever leaves your browser.</p>
-
-    <h2>10. Data Retention & Deletion</h2>
-    <ul>
-      <li><strong>Uninstalling the extension</strong> removes all locally stored data (preferences, sessions, cached license status)</li>
-      <li><strong>Cancelling your subscription</strong> marks your license as inactive in our database</li>
-      <li><strong>To delete your data entirely</strong>, email <a href="mailto:algomittens@gmail.com">algomittens@gmail.com</a> and we will remove your record from Supabase within 30 days</li>
+      <li>Browsing history or activity beyond tab titles and URLs displayed in the popup</li>
+      <li>Page content, cookies, form data, or login credentials</li>
+      <li>Personal files, device identifiers, or hardware information</li>
+      <li>Analytics, telemetry, advertising IDs, or tracking pixels</li>
+      <li>Full credit card numbers (payment details are handled entirely by Stripe)</li>
     </ul>
 
-    <h2>11. Children's Privacy</h2>
-    <p>HorizantalTabs is not directed at children under 13. We do not knowingly collect data from children. If you believe a child has provided us with personal information, contact us and we will delete it.</p>
+    <h2>9. Data Retention</h2>
+    <ul>
+      <li><strong>Local data</strong> (tab metadata, thumbnails, saved sessions, preferences) is retained on your device until you uninstall the extension or clear browser data.</li>
+      <li><strong>License data</strong> (email, subscription status) is retained on our servers until you cancel your subscription or request deletion.</li>
+      <li><strong>Payment records</strong> are retained by Stripe per <a href="https://stripe.com/privacy" target="_blank" rel="noopener">their retention policy</a>.</li>
+    </ul>
 
-    <h2>12. Security</h2>
-    <p>All communication between the extension and our servers uses HTTPS/TLS encryption. License verification uses Supabase's row-level security to ensure users can only read their own license status.</p>
+    <h2>10. Data Deletion</h2>
+    <p>You can delete your data at any time:</p>
+    <ul>
+      <li><strong>Local data:</strong> Uninstall the extension or clear your browser's extension data. This removes all preferences, saved sessions, and cached license status.</li>
+      <li><strong>Saved sessions:</strong> Delete individual sessions from within the extension.</li>
+      <li><strong>Server-side data:</strong> Cancel your Pro subscription, then email <a href="mailto:algomittens@gmail.com">algomittens@gmail.com</a> to request complete deletion of your license record from our database. We will process deletion requests within 30 days.</li>
+    </ul>
 
-    <h2>13. Changes to This Policy</h2>
-    <p>We may update this policy from time to time. Changes will be posted on this page with an updated date. Continued use of the extension after changes constitutes acceptance.</p>
+    <h2>11. Your Rights</h2>
+    <p>Depending on your location, you may have the right to:</p>
+    <ul>
+      <li>Access, correct, or delete your personal data</li>
+      <li>Object to or restrict processing of your data</li>
+      <li>Withdraw consent at any time by uninstalling the extension and requesting data deletion</li>
+      <li>Lodge a complaint with your local data protection authority</li>
+    </ul>
+    <p>To exercise any of these rights, email <a href="mailto:algomittens@gmail.com">algomittens@gmail.com</a>.</p>
 
-    <h2>14. Chrome Web Store Compliance</h2>
-    <p>This extension complies with the <a href="https://developer.chrome.com/docs/webstore/program-policies/" target="_blank">Chrome Web Store Developer Program Policies</a>, including the limited use requirements for the Tabs API.</p>
+    <h2>12. Children's Privacy</h2>
+    <p>HorizantalTabs is not intended for use by anyone under the age of 13. We do not knowingly collect data from children. If you believe a child has provided us with personal data, contact us and we will promptly delete it.</p>
 
-    <h2>15. Contact</h2>
-    <p>For questions, concerns, or data deletion requests:<br>
-    <strong>Algomittens LLC</strong><br>
-    <a href="mailto:algomittens@gmail.com">algomittens@gmail.com</a></p>
+    <h2>13. Cookies</h2>
+    <p>HorizantalTabs does not use cookies. License status is stored in <code>chrome.storage.local</code>, which is accessible only to the extension.</p>
+
+    <h2>14. Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. If we make material changes, we will update the "Last updated" date above. Continued use of HorizantalTabs after changes constitutes acceptance of the updated policy.</p>
+
+    <h2>15. Chrome Web Store User Data Policy Compliance</h2>
+    <p>HorizantalTabs' use of user data adheres to the <a href="https://developer.chrome.com/docs/webstore/program-policies/" target="_blank" rel="noopener">Chrome Web Store User Data Policy</a>, including the Limited Use requirements:</p>
+    <ul>
+      <li>HorizantalTabs only uses data in ways that are necessary to provide and improve the extension's single purpose: horizontal tab management, including displaying, searching, reordering, and organizing your open tabs.</li>
+      <li>HorizantalTabs does not transfer user data to third parties except as necessary to provide the service (as described in Section 5), to comply with applicable laws, or to protect against malware, spam, phishing, or other fraud or abuse.</li>
+      <li>HorizantalTabs does not use or transfer user data for personalized advertisements.</li>
+      <li>HorizantalTabs does not sell user data to third parties, data brokers, or information resellers.</li>
+      <li>HorizantalTabs does not use or transfer user data to determine credit-worthiness or for lending purposes.</li>
+      <li>No human reads your user data unless (a) you give explicit consent for a specific support request, (b) it is necessary for security purposes such as investigating abuse, or (c) it is required to comply with applicable law.</li>
+    </ul>
+
+    <h2>16. Financial &amp; Authentication Data</h2>
+    <p>HorizantalTabs does not publicly disclose any financial or payment information. Credit card details are handled exclusively by Stripe and are never accessible to us. License verification tokens stored in <code>chrome.storage.local</code> are never publicly disclosed, logged in plaintext, or exposed to third parties.</p>
+
+    <h2>17. Contact</h2>
+    <p>Questions, concerns, or data requests? Email <a href="mailto:algomittens@gmail.com">algomittens@gmail.com</a>.</p>
   </div>
 
   <footer>
-    <div>&copy; 2026 Algomittens LLC. All rights reserved.</div>
+    <span>&copy; 2026 Algomittens LLC</span>
     <div class="footer-links">
       <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms of Service</a>
