@@ -103,11 +103,11 @@
       color: #fff;
     }
     .btn-secondary {
-      background: var(--bg-elevated);
+      background: transparent;
       color: var(--text-primary);
-      border: 1px solid var(--border-light);
+      border: 1px solid rgba(255,255,255,.5);
     }
-    .btn-secondary:hover { border-color: var(--accent); }
+    .btn-secondary:hover { border-color: #fff; }
     .btn-outline-accent {
       background: transparent;
       color: var(--accent-bright);
@@ -122,7 +122,7 @@
     .hero {
       position: relative; z-index: 1;
       text-align: center;
-      padding: 160px 24px 60px;
+      padding: 160px 24px 30px;
       max-width: none; margin: 0 auto;
     }
     .hero h1 {
@@ -133,16 +133,17 @@
       letter-spacing: -0.03em;
       margin-bottom: 20px;
     }
-    .hero h1 em {
+    .hero h1 .cycle-text {
       font-style: italic;
-      background: var(--accent-gradient);
+      background: linear-gradient(135deg, #5CD4B8, #3BBFA0, #2CA882);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
+      transition: opacity .4s ease;
       padding-right: 0.15em;
     }
     .hero p {
       font-size: 17px; color: var(--text-secondary);
-      max-width: 480px; margin: 0 auto 36px;
+      max-width: 480px; margin: 0 auto 20px;
       line-height: 1.7;
     }
     .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
@@ -692,13 +693,12 @@
   </nav>
 
   <section class="hero">
-    <h1>Do you wish you can <em>horizantally scroll</em> your tabs?</h1>
-    <p>HorizantalTabs puts them all in a scrollable strip so you can actually find the one you're looking for. And More!</p>
+    <h1>Do you wish you can <span class="cycle-text" id="cycle-text">horizantally scroll</span> your tabs?</h1>
+    <p><span style="color:#fff;font-weight:600">Horizantal</span><span style="background:var(--accent-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600">Tabs</span> puts them all in a scrollable strip so you can actually find the one you're looking for. And More!</p>
     <div class="hero-btns">
       <a href="#" class="btn btn-outline-accent" id="cws-link-hero">Add to Chrome</a>
       <a href="#features" class="btn btn-secondary">What's in it</a>
     </div>
-    <div class="hero-note">Free. No account needed.</div>
   </section>
 
   <div class="demo-section">
@@ -786,6 +786,7 @@
             <div class="fl-icon" id="fl-search" style="cursor:pointer" title="Search"><svg viewBox="0 0 16 16" width="12" height="12"><circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="10" y1="10" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
             <div class="fl-icon" id="fl-theme" style="cursor:pointer" title="Theme"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/></svg></div>
             <div class="fl-icon" id="fl-pin" style="cursor:pointer" title="Pin bar"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 17v5"/><path d="M5 17h14"/><path d="M15 3.36L9 3.36 7.5 10.5h9L15 3.36z"/></svg></div>
+            <div class="fl-icon" id="fl-autohide" style="cursor:pointer" title="Auto-hide"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
             <div class="fl-close" id="mock-floater-close" style="cursor:pointer" title="Close"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
           </div>
         </div>
@@ -926,6 +927,11 @@
         <span class="feature-tag">Pro</span>
       </div>
       <div class="feature-row">
+        <span class="feature-name pro">Auto-hide bar</span>
+        <span class="feature-desc">Floating bar hides when you move away. Reappears on hover near the top.</span>
+        <span class="feature-tag">Pro</span>
+      </div>
+      <div class="feature-row">
         <span class="feature-name pro">Mute tabs</span>
         <span class="feature-desc">Mute any tab with one click. See which tabs are playing audio.</span>
         <span class="feature-tag">Pro</span>
@@ -968,6 +974,7 @@
           <li>Multi-row layout</li>
           <li>Export URLs</li>
           <li>Floating bar</li>
+          <li>Auto-hide bar</li>
           <li>Mute tabs</li>
           <li>Right-click menu</li>
         </ul>
@@ -1345,6 +1352,72 @@
         floaterBar.querySelectorAll('.fl-icon, .fl-close').forEach(i => i.style.color = '');
       }
     });
+
+    // Floater auto-hide toggle
+    const flAutoHideBtn = document.getElementById('fl-autohide');
+    let flAutoHide = false;
+    let flAutoHideTimer = null;
+
+    flAutoHideBtn.addEventListener('click', () => {
+      flAutoHide = !flAutoHide;
+      flAutoHideBtn.classList.toggle('active', flAutoHide);
+      if (!flAutoHide) {
+        clearTimeout(flAutoHideTimer);
+        floaterBar.style.transition = '';
+        floaterBar.style.transform = '';
+        floaterBar.style.opacity = '';
+        floaterBar.style.pointerEvents = '';
+      }
+    });
+
+    // Mouse near top of chrome-page → show, away → slide up
+    function flSlideIn() {
+      floaterBar.style.transition = 'transform .25s ease, opacity .25s ease';
+      floaterBar.style.transform = 'translateY(0)';
+      floaterBar.style.opacity = '1';
+      floaterBar.style.pointerEvents = 'auto';
+    }
+    function flSlideOut() {
+      floaterBar.style.transition = 'transform .25s ease, opacity .25s ease';
+      floaterBar.style.transform = 'translateY(-100%)';
+      floaterBar.style.opacity = '0';
+      floaterBar.style.pointerEvents = 'none';
+    }
+
+    chromePage.addEventListener('mousemove', e => {
+      if (!flAutoHide || !floaterActive) return;
+      const rect = chromePage.getBoundingClientRect();
+      const relY = e.clientY - rect.top;
+      if (relY <= 50) {
+        clearTimeout(flAutoHideTimer);
+        flSlideIn();
+      } else {
+        clearTimeout(flAutoHideTimer);
+        flAutoHideTimer = setTimeout(flSlideOut, 500);
+      }
+    });
+
+    floaterBar.addEventListener('mouseenter', () => {
+      if (!flAutoHide) return;
+      clearTimeout(flAutoHideTimer);
+      flSlideIn();
+    });
+    floaterBar.addEventListener('mouseleave', () => {
+      if (!flAutoHide) return;
+      flAutoHideTimer = setTimeout(flSlideOut, 500);
+    });
+    // Word cycle — fade out, swap text, fade in
+    const cycleEl = document.getElementById('cycle-text');
+    const cycleList = ['horizantally scroll', 'effortlessly browse', 'instantly search for'];
+    let cycleIdx = 0;
+    setInterval(() => {
+      cycleEl.style.opacity = '0';
+      setTimeout(() => {
+        cycleIdx = (cycleIdx + 1) % cycleList.length;
+        cycleEl.textContent = cycleList[cycleIdx];
+        cycleEl.style.opacity = '1';
+      }, 400);
+    }, 2500);
   </script>
 
 </body>
